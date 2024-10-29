@@ -19,7 +19,7 @@
     "cookie-parser": "^1.4.7",
     "express-session": "^1.18.1",
     "google-auth-library": "^9.14.2",
-    "isbot": "^4.1.0"
+    "isbot": "^4.1.0",
 
     "pg": "^8.13.1"
   },
