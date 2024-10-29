@@ -2,7 +2,7 @@
 import { type LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { getTokenFromCode } from "../lib/oauth-providers/google";
 import { connectDB, query, disconnectDB } from "../lib/db";
-import { createSession } from "../lib/session"; // Import the createSession function
+import { getSession, commitSession } from "../lib/session"; // Import the session functions
 
 export async function loader({ request }: LoaderFunctionArgs) {
     const searchParams = new URL(request.url).searchParams;
@@ -37,6 +37,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const lastName = idToken.family_name || "";
     const userInfoJson = JSON.stringify(idToken);
 
+    const session = await getSession(request.headers.get("Cookie"));
+
     if (state === "register") {
         if (user) {
             await disconnectDB();
@@ -47,9 +49,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
                     'INSERT INTO users (google_sub, first_name, last_name, userinfo) VALUES ($1, $2, $3, $4)',
                     [idToken.sub, firstName, lastName, userInfoJson]
                 );
-                createSession({ google_sub: idToken.sub }, request);
+                session.set("userId", idToken.sub); // Store user info in the session
                 await disconnectDB();
-                return redirect('/dashboard');
+                return redirect('/dashboard', {
+                    headers: {
+                        "Set-Cookie": await commitSession(session), // Set the cookie
+                    },
+                });
             } catch (error) {
                 console.error("Error creating new user:", error);
                 await disconnectDB();
@@ -63,9 +69,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
             await disconnectDB();
             return redirect("/register");
         }
-        createSession(user, request); // Use the request object to create session
+        session.set("userId", user.google_sub); // Store user info in the session
         await disconnectDB();
-        return redirect('/dashboard');
+        return redirect('/dashboard', {
+            headers: {
+                "Set-Cookie": await commitSession(session), // Set the cookie
+            },
+        });
     }
 
     await disconnectDB();
@@ -75,7 +85,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function GoogleCallback() {
     return (
         <div>
-            <h1>GoogleCallback</h1>
+            <h1>Google Callback</h1>
         </div>
     );
 }

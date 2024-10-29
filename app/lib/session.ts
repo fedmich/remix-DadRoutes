@@ -1,21 +1,14 @@
 // lib/session.ts
-import session from 'express-session';
 
-const sessionStore = new session.MemoryStore();
+import { createCookieSessionStorage } from "@remix-run/node";
 
-export const sessionMiddleware = session({
-  store: sessionStore,
-  secret: process.env.SESSION_SECRET || 'your-secret', // Use a strong secret
-  resave: false,
-  saveUninitialized: true,
+const sessionStorage = createCookieSessionStorage({
   cookie: {
+    name: "your-session-name",
+    secure: process.env.NODE_ENV === "production",
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-    maxAge: 60 * 60 * 24 * 1000, // 1 day in milliseconds
+    maxAge: 60 * 60 * 24, // 1 day
   },
 });
 
-// Function to create a session
-export const createSession = (user: { google_sub: string }, req: any) => {
-  req.session.userId = user.google_sub; // Store user info in the session
-};
+export const { getSession, commitSession, destroySession } = sessionStorage;
