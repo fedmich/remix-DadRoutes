@@ -2,8 +2,16 @@
 import pkg from 'pg';
 const { Client } = pkg;
 
+/*
 const client = new Client({
   connectionString: process.env.DATABASE_URL, // Your PostgreSQL connection string
+  ssl: {
+    rejectUnauthorized: false, // Adjust as needed for security
+  },
+});
+*/
+const client = new Client({
+  connectionString: `postgres://${process.env.NILEDB_USER}:${process.env.NILEDB_PASSWORD}@${process.env.NILE_DB_HOST}:${process.env.NILEDB_PORT}/${process.env.NILEDB_NAME}`, // Constructed connection string
   ssl: {
     rejectUnauthorized: false, // Adjust as needed for security
   },
