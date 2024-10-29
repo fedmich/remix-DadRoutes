@@ -13,6 +13,7 @@
   "dependencies": {
     "@netlify/functions": "^2.6.0",
     "@netlify/remix-adapter": "^2.3.1",
+    "@react-google-maps/api": "^2.20.3",
     "@remix-run/node": "^2.13.1",
     "@remix-run/react": "^2.13.1",
     "@remix-run/serve": "^2.13.1",
@@ -27,6 +28,7 @@
     "@remix-run/dev": "^2.13.1",
     "@types/express-session": "^1.18.0",
 
+    "@types/googlemaps": "^3.43.3",
     "@types/pg": "^8.11.10",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
