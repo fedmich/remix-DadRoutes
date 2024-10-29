@@ -1,46 +1,76 @@
 // app/routes/google-callback.tsx
 import { type LoaderFunctionArgs, redirect } from "@remix-run/node";
-
 import { getTokenFromCode } from "../lib/oauth-providers/google";
+import { connectDB, query, disconnectDB } from "../lib/db";
+import { createSession } from "../lib/session"; // Import the createSession function
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const searchParams = new URL(request.url).searchParams
-  const code = searchParams.get("code");
-  const state = searchParams.get("state");
+    const searchParams = new URL(request.url).searchParams;
+    const code = searchParams.get("code");
+    const state = searchParams.get("state");
 
-  if (!state || !code) {
-    return redirect("/")
-  }
-  const idToken = await getTokenFromCode(code)
+    if (!state || !code) {
+        return redirect("/");
+    }
 
-  const user = await db.users.find.where({ google_sub: idToken.sub })
+    let idToken;
+    try {
+        idToken = await getTokenFromCode(code);
+    } catch (error) {
+        console.error("Error getting token from code:", error);
+        return redirect("/error");
+    }
 
-  if (state === "register" && user) {
-    return redirect("/sign-in")
-  }
+    await connectDB();
 
-  if (state === "register") {
-    const newUser = await db.insert.users({ google_sub: idToken.sub })
-    await createSession(newUser)
-    return redirect('/dashboard')
-  }
+    let user;
+    try {
+        const res = await query('SELECT * FROM users WHERE google_sub = $1', [idToken.sub]);
+        user = res.rows[0];
+    } catch (error) {
+        console.error("Error querying database:", error);
+        await disconnectDB();
+        return redirect("/error");
+    }
 
-  if (state === "sign-in" && !user) {
-    return redirect("/register")
-  }
+    const response = new Response(); // Create a new response object
 
-  if (state === "sign-in") {
-    await createSession(user)
-    return redirect('/dashboard')
-  }
+    if (state === "register") {
+        if (user) {
+            await disconnectDB();
+            return redirect("/sign-in");
+        } else {
+            try {
+                await query('INSERT INTO users (google_sub) VALUES ($1)', [idToken.sub]);
+                createSession({ google_sub: idToken.sub }, request); // Use the request object to create session
+                await disconnectDB();
+                return redirect('/dashboard');
+            } catch (error) {
+                console.error("Error creating new user:", error);
+                await disconnectDB();
+                return redirect("/error");
+            }
+        }
+    }
 
-  return redirect('/')
+    if (state === "sign-in") {
+        if (!user) {
+            await disconnectDB();
+            return redirect("/register");
+        }
+        createSession(user, request); // Use the request object to create session
+        await disconnectDB();
+        return redirect('/dashboard');
+    }
+
+    await disconnectDB();
+    return redirect('/');
 }
 
 export default function GoogleCallback() {
-  return (
-    <div>
-      <h1>GoogleCallback</h1>
-    </div>
-  );
+    return (
+        <div>
+            <h1>GoogleCallback</h1>
+        </div>
+    );
 }
