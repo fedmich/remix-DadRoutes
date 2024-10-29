@@ -33,7 +33,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
         return redirect("/error");
     }
 
-    const response = new Response(); // Create a new response object
+    const firstName = idToken.given_name || "";
+    const lastName = idToken.family_name || "";
+    const userInfoJson = JSON.stringify(idToken);
 
     if (state === "register") {
         if (user) {
@@ -41,8 +43,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
             return redirect("/sign-in");
         } else {
             try {
-                await query('INSERT INTO users (google_sub) VALUES ($1)', [idToken.sub]);
-                createSession({ google_sub: idToken.sub }, request); // Use the request object to create session
+                await query(
+                    'INSERT INTO users (google_sub, first_name, last_name, userinfo) VALUES ($1, $2, $3, $4)',
+                    [idToken.sub, firstName, lastName, userInfoJson]
+                );
+                createSession({ google_sub: idToken.sub }, request);
                 await disconnectDB();
                 return redirect('/dashboard');
             } catch (error) {
