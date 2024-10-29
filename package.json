@@ -16,6 +16,8 @@
     "@remix-run/node": "^2.13.1",
     "@remix-run/react": "^2.13.1",
     "@remix-run/serve": "^2.13.1",
+
+    "google-auth-library": "^9.14.2",
     "isbot": "^4.1.0"
   },
   "devDependencies": {
