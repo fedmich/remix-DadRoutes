@@ -8,7 +8,6 @@ export const meta: MetaFunction = () => [
 ];
 
 
-
 export default function Index() {
   return (
     <div className="flex flex-col min-h-screen items-center justify-center bg-gray-100">
@@ -17,7 +16,7 @@ export default function Index() {
       </header>
 
       <main className="flex flex-col items-center justify-center flex-grow">
-        <img src="/path/to/your/logo.png" alt="Dad Routes Logo" className="mb-8" />
+        <img src="/logo-light.png" alt="Dad Routes Logo" className="mb-8" />
         <input
           type="text"
           placeholder="Search for routes..."
