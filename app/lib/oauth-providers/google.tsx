@@ -20,7 +20,9 @@ const oauthClient = new OAuth2Client({
 export const generateAuthUrl = (state: string) => {
   return oauthClient.generateAuthUrl({
     access_type: "online",
-    scope: ["https://www.googleapis.com/auth/userinfo.email"],
+    scope: ["https://www.googleapis.com/auth/userinfo.email"
+    , "https://www.googleapis.com/auth/userinfo.profile"
+    ],
     state
   });
 };
