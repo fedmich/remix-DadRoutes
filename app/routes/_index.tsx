@@ -1,4 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
+import { Link } from "@remix-run/react";
 
 
 export const meta: MetaFunction = () => [
@@ -22,6 +23,8 @@ export default function Index() {
           placeholder="Search for routes..."
           className="border border-gray-300 p-4 rounded-lg w-80 text-center"
         />
+
+        <Link to="/sign-in">Sign in with Google</Link>
       </main>
 
       <footer className="bg-white shadow py-4">
