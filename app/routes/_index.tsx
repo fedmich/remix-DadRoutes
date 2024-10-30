@@ -10,6 +10,15 @@ export const meta: MetaFunction = () => [
 
 
 export default function Index() {
+  const [query, setQuery] = useState("");
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (query.trim()) {
+      window.location.href = `/search?q=${encodeURIComponent(query)}`;
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen items-center justify-center bg-gray-100">
       <header className="w-full bg-white shadow py-4">
@@ -18,11 +27,19 @@ export default function Index() {
 
       <main className="flex flex-col items-center justify-center flex-grow">
         <img src="/logo-light.png" alt="Dad Routes Logo" className="mb-8" />
+-center flex-grow">
+        <img src="/logo-light.png" alt="Dad Routes Logo" className="mb-8" />
+        <form onSubmit={handleSubmit} className="mb-4">
         <input
-          type="text"
-          placeholder="Search for routes..."
-          className="border border-gray-300 p-4 rounded-lg w-80 text-center"
-        />
+            type="text"
+            placeholder="Search for routes..."
+            required
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="border border-gray-300 p-4 rounded-lg w-80 text-center"
+          />
+          <button type="submit" className="hidden">Search</button>
+        </form>
 
         <Link to="/sign-in">Sign in with Google</Link>
       </main>
