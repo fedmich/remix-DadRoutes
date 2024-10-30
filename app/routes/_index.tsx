@@ -1,6 +1,9 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
+import { useState } from "react";
+import { motion } from "framer-motion"; // Import framer-motion
 
+import InfoSection from '~/components/InfoSection'; // Import the InfoSection component
 
 export const meta: MetaFunction = () => [
   { title: "Dad Routes - Your Guide to Family Adventures" },
@@ -27,8 +30,6 @@ export default function Index() {
 
       <main className="flex flex-col items-center justify-center flex-grow">
         <img src="/logo-light.png" alt="Dad Routes Logo" className="mb-8" />
--center flex-grow">
-        <img src="/logo-light.png" alt="Dad Routes Logo" className="mb-8" />
         <form onSubmit={handleSubmit} className="mb-4">
         <input
             type="text"
@@ -41,6 +42,63 @@ export default function Index() {
           <button type="submit" className="hidden">Search</button>
         </form>
 
+        {/* Copy text and features with animation */}
+        <motion.section
+          className="px-4 mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-2xl font-bold mb-4">Discover Amazing Routes</h2>
+          <p>Explore our vast collection of family-friendly biking routes that offer:</p>
+          <ul className="list-disc list-inside mb-4">
+            <li>Scenic views and beautiful landscapes</li>
+            <li>Safe paths for kids and families</li>
+            <li>Tips from experienced bikers</li>
+            <li>Community feedback on routes</li>
+            <li>Route ratings from fellow adventurers</li>
+            <li>Detailed maps and navigation assistance</li>
+            <li>Regularly updated route information</li>
+          </ul>
+          <p>Join our community of biking enthusiasts and start your adventure today!</p>
+        </motion.section>
+
+        {/* Info Sections */}
+        <InfoSection
+          imageSrc="/images/route1.jpg"
+          altText="Scenic Route 1"
+          title="Explore Scenic Routes"
+          content="Discover breathtaking scenic routes designed for family adventures, perfect for creating unforgettable memories."
+        />
+        <InfoSection
+          imageSrc="/images/route2.jpg"
+          altText="Safe Paths"
+          title="Safety First"
+          content="Our routes prioritize safety, providing paths that are perfect for kids and families to enjoy biking together."
+        />
+        <InfoSection
+          imageSrc="/images/route3.jpg"
+          altText="Community Feedback"
+          title="Community Insights"
+          content="Benefit from community feedback and tips from experienced bikers who have traveled these routes."
+        />
+        <InfoSection
+          imageSrc="/images/route4.jpg"
+          altText="Detailed Navigation"
+          title="Detailed Navigation"
+          content="Get access to detailed maps and navigation assistance to make your biking experience smooth and enjoyable."
+        />
+        <InfoSection
+          imageSrc="/images/route5.jpg"
+          altText="Join Our Community"
+          title="Join Our Community"
+          content="Become part of a vibrant community of biking enthusiasts sharing experiences, tips, and routes!"
+        />
+
+        {/* Commented out the Testimonials section */}
+        {/* <Testimonials /> */}
+
+        {/* Uncomment the following line when ready to use the sign-in feature */}
         <Link to="/sign-in">Sign in with Google</Link>
       </main>
 
