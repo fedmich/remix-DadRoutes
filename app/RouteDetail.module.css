@@ -1,0 +1,48 @@
+/* RouteDetail.module.css */
+.container {
+    display: flex;
+    /*
+    flex-direction: row;
+    height: 100vh; Adjust as needed 
+    */
+  }
+  
+  .sidebar {
+    width: 250px; /* Width of the sidebar */
+    padding: 20px;
+    background-color: #f8f8f8; /* Light background for the sidebar */
+    border-right: 1px solid #ddd; /* Right border for separation */
+    overflow-y: auto; /* Allow scrolling if necessary */
+  }
+  
+  .mapContainer {
+    flex-grow: 1; /* Take the remaining space for the map */
+    height: 100%; /* Ensure it fills the height of the container */
+    position: relative;
+  }
+  
+  .routeTitle {
+    font-size: 1.5rem; /* Adjust font size as needed */
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .routeInfo {
+    margin-bottom: 20px;
+  }
+  
+  .waypointList {
+    list-style: none; /* Remove default list styling */
+    padding: 0;
+  }
+  
+  .waypointItem {
+    padding: 10px;
+    cursor: pointer; /* Indicate that this item is clickable */
+    transition: background-color 0.3s; /* Smooth hover transition */
+  }
+  
+  .waypointItem:hover {
+    background-color: #e0e0e0; /* Light gray on hover */
+  }
+  
