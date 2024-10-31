@@ -7,6 +7,7 @@ import type { User, Route } from "~/types"; // Assume you've defined types
 
 import Layout from "~/components/Layout";
 
+import defaultAvatar from '~/assets/default_avatar.png';
 import InvalidUser from "~/components/InvalidUser";
 
 type LoaderData = {
@@ -77,9 +78,9 @@ export default function UserProfile() {
                         }}
                     >
                         <img
-                            src={user.userinfo?.avatarUrl || "/default-avatar.jpg"} // replace with actual image source
+                            src={user.picture || defaultAvatar}
                             alt={`${user.first_name}'s avatar`}
-                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                            style={{ borderRadius: '50%', width: "100%", height: "100%", objectFit: "cover", marginRight: '20px' }}
                         />
                     </div>
                 </div>
