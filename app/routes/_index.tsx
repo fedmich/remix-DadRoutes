@@ -82,7 +82,7 @@ export default function Index() {
             imageSrc="/images/route2.jpg"
             altText="Safe Paths"
             title="Safety First on Every Route"
-            content="Safety is at the heart of every route recommendation we provide.	 With child-friendly paths, low-traffic routes, and clearly marked trails, you can rest assured that your family’s adventure will be both exciting and secure. We take into account route conditions, elevation, and other factors to make sure that every adventure is safe and enjoyable."
+            content="Safety is at the heart of every route recommendation we provide.	 With child-friendly paths, low-traffic routes, and clearly marked trails, you can rest assured that your family's adventure will be both exciting and secure. We take into account route conditions, elevation, and other factors to make sure that every adventure is safe and enjoyable."
             reverse
           />
           <InfoSection
@@ -102,7 +102,7 @@ export default function Index() {
           imageSrc="/images/route5.jpg"
           altText="Join Our Community"
           title="Join Our Community"
-            content="Discover, share, and connect with other biking enthusiasts who love family outings just as much as you do! As part of our community, you’ll gain access to exclusive events, group rides, and a wealth of shared knowledge. Whether you're a beginner or a seasoned cyclist, there's a place for you here."
+            content="Discover, share, and connect with other biking enthusiasts who love family outings just as much as you do! As part of our community, you'll gain access to exclusive events, group rides, and a wealth of shared knowledge. Whether you're a beginner or a seasoned cyclist, there's a place for you here."
           />
         </div>
 
