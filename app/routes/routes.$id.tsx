@@ -86,49 +86,47 @@ const RouteDetail = () => {
     longitude: parseFloat(waypoint.longitude as unknown as string),
   }));
 
-
   return (
-
     <Layout>
 
 
-    <div className={styles.container}>
-      <div className={styles.sidebar}>
-        <h1 className={styles.routeTitle}>{route.name}</h1>
-        <div className={styles.routeInfo}>
-          <p><strong>Difficulty:</strong> {route.difficulty}</p>
-          <p><strong>Number of Stops:</strong> {route.num_stops}</p>
-          <p><strong>Number of Kids:</strong> {route.num_kids}</p>
+      <div className={styles.container}>
+        <div className={styles.sidebar}>
+          <h1 className={styles.routeTitle}>{route.name}</h1>
+          <div className={styles.routeInfo}>
+            <p><strong>Difficulty:</strong> {route.difficulty}</p>
+            <p><strong>Number of Stops:</strong> {route.num_stops}</p>
+            <p><strong>Number of Kids:</strong> {route.num_kids}</p>
+          </div>
+          <h2>Waypoints</h2>
+          <ul className={styles.waypointList}>
+            {numericWaypoints.map((waypoint) => (
+              <li
+                key={waypoint.id}
+                className={styles.waypointItem}
+                onMouseEnter={() => {
+                  // Logic to show the corresponding marker tooltip on hover
+                  // This can be managed via state if necessary
+                }}
+                onClick={() => {
+                  // Logic to pan to the corresponding marker
+                  // Use a callback to set the map center to this waypoint
+                }}
+              >
+                <strong>{waypoint.name_poi ? waypoint.name_poi : waypoint.latitude + ',' + waypoint.longitude}</strong>
+              </li>
+            ))}
+          </ul>
         </div>
-        <h2>Waypoints</h2>
-        <ul className={styles.waypointList}>
-          {numericWaypoints.map((waypoint) => (
-            <li 
-              key={waypoint.id} 
-              className={styles.waypointItem} 
-              onMouseEnter={() => {
-                // Logic to show the corresponding marker tooltip on hover
-                // This can be managed via state if necessary
-              }}
-              onClick={() => {
-                // Logic to pan to the corresponding marker
-                // Use a callback to set the map center to this waypoint
-              }}
-            >
-              <strong>{waypoint.name_poi}</strong>
-            </li>
-          ))}
-        </ul>
+        <div className={styles.mapContainer}>
+          <GoogleMapWithWaypoints
+            waypoints={numericWaypoints}
+            center={mapCenter}
+            googleMapsApiKey={googleMapsApiKey}
+          />
+        </div>
       </div>
-      <div className={styles.mapContainer}>
-        <GoogleMapWithWaypoints
-          waypoints={numericWaypoints}
-          center={mapCenter}
-          googleMapsApiKey={googleMapsApiKey}
-        />
-      </div>
-    </div>
-    
+
     </Layout>
   );
 };
