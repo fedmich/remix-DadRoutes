@@ -91,6 +91,17 @@ export default function UserProfile() {
                     {user.occupation && <p>{user.occupation}</p>}
                     {user.about_bio && <p>{user.about_bio}</p>}
                     <p>Total Bike Routes: {routeCount}</p>
+			 {/* Followers and Following Section */}
+                    <div style={{ display: 'flex', justifyContent: 'space-around', margin: '20px 0' }}>
+                        <div>
+                            <h4>{user.followers || 0}</h4>
+                            <p>Followers</p>
+                        </div>
+                        <div>
+                            <h4>{user.following || 0}</h4>
+                            <p>Following</p>
+                        </div>
+                    </div>
 
                     {/* Social Links */}
                     <div style={{ marginTop: "20px" }}>
