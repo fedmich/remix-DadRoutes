@@ -6,7 +6,7 @@ import { connectAndQuery } from "~/lib/db";
 import type { User, Route } from "~/types"; // Assume you've defined types
 
 import Layout from "~/components/Layout";
-
+import UserRoutes from "~/components/UserRoutes";
 import defaultAvatar from '~/assets/default_avatar.png';
 import InvalidUser from "~/components/InvalidUser";
 
@@ -143,6 +143,9 @@ export default function UserProfile() {
                     </div>
                 </div>
             </div>
+
+
+            <UserRoutes userId={user.id} />
 
         </Layout>
     );
