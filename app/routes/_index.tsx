@@ -114,6 +114,7 @@ export default function Index() {
 
       <footer className="bg-white shadow py-6 mt-16 w-full">
         <nav className="flex justify-center space-x-8">
+          <Link to="/users" className="text-gray-600 hover:text-blue-500">Community</Link>
           <a href="/about" className="text-gray-600 hover:text-blue-500">About</a>
           <a href="/contact" className="text-gray-600 hover:text-blue-500">Contact</a>
           <a href="/blog" className="text-gray-600 hover:text-blue-500">Blog</a>
