@@ -13,6 +13,7 @@ import InvalidUser from "~/components/InvalidUser";
 type LoaderData = {
     user: User;
     routeCount: number;
+    routes: Route[]; // Add the type for routes
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
@@ -31,11 +32,17 @@ export const loader: LoaderFunction = async ({ params }) => {
     const routeCountRes = await connectAndQuery("SELECT COUNT(*) FROM routes WHERE userid = $1", [userId]);
     const routeCount = parseInt(routeCountRes.rows[0].count, 10);
 
-    return json({ user, routeCount });
+    // Fetch routes for the user
+    const routesQuery = "SELECT * FROM routes WHERE userid = $1 AND active = true"; // Adjust the query as needed
+    const routesResult = await connectAndQuery(routesQuery, [userId]);
+    const routes = routesResult.rows; // This should return an array of Route objects
+
+
+    return json<LoaderData>({ user, routeCount, routes });
 };
 
 export default function UserProfile() {
-    const { user, routeCount } = useLoaderData<LoaderData>();
+    const { user, routeCount, routes } = useLoaderData<LoaderData>();
 
     if( ! user){
         return (
@@ -141,11 +148,14 @@ export default function UserProfile() {
                             </p>
                         )}
                     </div>
+
+
+                    <UserRoutes userId={user.id} routes={routes} />
+
                 </div>
             </div>
 
 
-            <UserRoutes userId={user.id} />
 
         </Layout>
     );
