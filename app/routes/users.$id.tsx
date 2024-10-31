@@ -7,6 +7,8 @@ import type { User, Route } from "~/types"; // Assume you've defined types
 
 import Layout from "~/components/Layout";
 
+import InvalidUser from "~/components/InvalidUser";
+
 type LoaderData = {
     user: User;
     routeCount: number;
@@ -33,6 +35,12 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export default function UserProfile() {
     const { user, routeCount } = useLoaderData<LoaderData>();
+
+    if( ! user){
+        return (
+            <InvalidUser></InvalidUser>
+        )
+    }
 
     return (
 
