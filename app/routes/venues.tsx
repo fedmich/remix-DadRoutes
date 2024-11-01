@@ -63,7 +63,13 @@ export const loader: LoaderFunction = async ({ request }) => {
 const VenuesPage = () => {
     const { venues, googleMapsApiKey } = useLoaderData<LoaderData>();
     const [selectedVenue, setSelectedVenue] = useState<Venue | null>(null);
-    const [mapCenter, setMapCenter] = useState({ lat: 41.57006, lng: -93.6466 });
+
+    // Determine the initial map center based on the venues data
+    const initialCenter = venues.length > 0
+        ? { lat: venues[0].latitude, lng: venues[0].longitude }
+        : { lat: 41.57006, lng: -93.6466 };
+
+    const [mapCenter, setMapCenter] = useState(initialCenter);
 
     const handleMarkerClick = (venue: Venue) => {
         setMapCenter({ lat: venue.latitude, lng: venue.longitude }); // Center map on marker

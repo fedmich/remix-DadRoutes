@@ -33,7 +33,7 @@ export default function VenuesMap({ initialVenues, googleMapsApiKey, onMarkerCli
             <GoogleMap
                 mapContainerStyle={{ width: "100%", height: "600px" }}
                 center={{ lat: 41.57006, lng: -93.6466 }}
-                zoom={18} // Change zoom level to 18
+                zoom={16}
             >
                 {initialVenues.map((venue) => (
                     <Marker
