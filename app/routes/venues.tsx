@@ -2,8 +2,10 @@
 import { LoaderFunction, json } from "@remix-run/node";
 import { connectAndQuery } from "~/lib/db";
 import { useEffect, useState } from "react";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";;
+import Layout from "~/components/Layout";
 import VenuesMap from "~/components/VenuesMap";
+import { getMarkerIcon } from '~/utils/getMarkerIcon'; // Import the utility function
 
 type Venue = {
     id: number;
@@ -25,6 +27,8 @@ type LoaderData = {
     venues: Venue[];
     googleMapsApiKey: string;
 };
+
+
 
 export const loader: LoaderFunction = async ({ request }) => {
     const lat = 41.57006;
@@ -56,9 +60,18 @@ export const loader: LoaderFunction = async ({ request }) => {
     });
 };
 
-export default function VenuesPage() {
+const VenuesPage = () => {
     const { venues, googleMapsApiKey } = useLoaderData<LoaderData>();
     const [selectedVenue, setSelectedVenue] = useState<Venue | null>(null);
+    const [mapCenter, setMapCenter] = useState({ lat: 41.57006, lng: -93.6466 });
+
+    const handleMarkerClick = (venue: Venue) => {
+        setMapCenter({ lat: venue.latitude, lng: venue.longitude }); // Center map on marker
+    };
+
+    const handleListItemClick = (venue: Venue) => {
+        setMapCenter({ lat: venue.latitude, lng: venue.longitude }); // Center map on venue
+    };
 
     const handleVenueClick = (venue: Venue) => {
         setSelectedVenue(venue);
@@ -66,23 +79,40 @@ export default function VenuesPage() {
     };
 
     return (
-        <div style={{ display: 'flex' }}>
-            <div style={{ width: '300px', padding: '10px', overflowY: 'scroll' }}>
-                <h2>Venues List</h2>
-                {venues.map((venue) => (
-                    <div key={venue.id} onClick={() => handleVenueClick(venue)} style={{ cursor: 'pointer', marginBottom: '10px', padding: '5px', border: '1px solid #ccc' }}>
-                        <h3>{venue.name}</h3>
+
+        <Layout>
+            <h2>Venues List</h2>
+            <div style={{ display: "flex", height: "80vh" }}> {/* Adjust height here */}
+                <div style={{ width: "300px", overflowY: "auto", maxHeight: "100%", border: "1px solid #ddd" }}>
+                    {venues.map((venue) => (
+                        <div key={venue.id} onClick={() => handleListItemClick(venue)} style={{ cursor: "pointer", padding: "10px", border: "1px solid #ddd", marginBottom: "5px" }}>
+                            <h4>{venue.name}</h4>
+                            {venue.picture && <img src={getMarkerIcon(venue.picture)} alt={venue.name} style={{ width: '50px', height: 'auto' }} />}
+                            <div>
+                                {venue.star_rating ? '⭐'.repeat(Math.round(venue.star_rating)) : 'No rating'}
+                            </div>
+			    
+			    
                         <p>{venue.address}</p>
                         <p>{venue.description}</p>
                         <p>Rating: {venue.star_rating}</p>
-                    </div>
-                ))}
+			
+                        </div>
+                    ))}
+                </div>
+                <VenuesMap
+                    initialVenues={venues.map((venue) => ({
+                        ...venue,
+                        latitude: parseFloat(venue.latitude),
+                        longitude: parseFloat(venue.longitude),
+                    }))}
+                    googleMapsApiKey={googleMapsApiKey}
+                    onMarkerClick={handleMarkerClick} // Pass down marker click handler
+                    center={mapCenter} // Add a center prop for the map
+                />
             </div>
-            <VenuesMap initialVenues={venues.map((venue) => ({
-                ...venue,
-                latitude: parseFloat(venue.latitude), // Convert to float
-                longitude: parseFloat(venue.longitude), // Convert to float
-            }))} googleMapsApiKey={googleMapsApiKey} />
-        </div>
+        </Layout>
     );
-}
+};
+
+export default VenuesPage;
