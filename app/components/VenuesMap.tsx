@@ -1,5 +1,14 @@
-import { useState } from "react";
+// components/VenuesMap.tsx
+import { useState, useEffect } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+
+type Venue = {
+    id: number;
+    name: string;
+    latitude: number;
+    longitude: number;
+    marker_type?: string;
+};
 
 type VenuesMapProps = {
     initialVenues: Venue[];
@@ -7,7 +16,9 @@ type VenuesMapProps = {
 };
 
 export default function VenuesMap({ initialVenues, googleMapsApiKey }: VenuesMapProps) {
-    const [venues, setVenues] = useState(initialVenues);
+    const [venues, setVenues] = useState<Venue[]>(initialVenues);
+
+    console.log(initialVenues); // Check if venues are passed correctly
 
     return (
         <LoadScript googleMapsApiKey={googleMapsApiKey}>
@@ -16,15 +27,15 @@ export default function VenuesMap({ initialVenues, googleMapsApiKey }: VenuesMap
                 center={{ lat: 41.57006, lng: -93.6466 }}
                 zoom={10}
             >
-                {venues.map((venue) => (
+                {initialVenues.map((venue) => (
                     <Marker
                         key={venue.id}
                         position={{ lat: venue.latitude, lng: venue.longitude }}
-                        icon={venue.marker_type ? `/path/to/marker/${venue.marker_type}.png` : undefined}
                         title={venue.name}
                     />
                 ))}
             </GoogleMap>
         </LoadScript>
     );
+
 }
