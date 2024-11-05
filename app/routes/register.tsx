@@ -3,7 +3,7 @@ import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
 import { generateAuthUrl } from "../lib/oauth-providers/google";
-import { Layout } from "~/root";
+import Layout from "~/components/Layout";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   // Put "register" in the state so we know where the user is 
