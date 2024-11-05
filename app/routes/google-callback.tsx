@@ -51,7 +51,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
                     'INSERT INTO users (google_sub, email, first_name, last_name, picture, userinfo) VALUES ($1, $2, $3, $4, $5, $6)',
                     [idToken.sub, email, firstName, lastName, picture, userInfoJson]
                 );
-                session.set("userId", idToken.sub); // Store user info in the session
+                session.set("authId", idToken.sub); // Store user info in the session
                 await disconnectDB();
                 return redirect('/dashboard', {
                     headers: {
@@ -71,7 +71,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
             await disconnectDB();
             return redirect("/register");
         }
-        session.set("userId", user.google_sub); // Store user info in the session
+        session.set("authId", idToken.sub); // Store user info in the session
         await disconnectDB();
         return redirect('/dashboard', {
             headers: {

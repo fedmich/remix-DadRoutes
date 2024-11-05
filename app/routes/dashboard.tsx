@@ -14,7 +14,23 @@ export const loader: LoaderFunction = async ({ request }) => {
     const session = await getSession(request.headers.get("Cookie"));
 
     // Check if userId is in the session
-    const userId = session.get("userId");
+    const authId = session.get("authId");
+
+    if (!authId) {
+        // Redirect to sign-in if user is not authenticated
+        return redirect("/sign-in");
+    }
+    const result_user = await connectAndQuery('SELECT * FROM users WHERE google_sub = $1', [authId]);
+
+    // Assign the data from the query result
+    const user_info = result_user.rows; // Assuming result.rows contains the query data
+
+    if (!user_info) {
+        // Redirect to sign-in if user is not authenticated
+        return redirect("/sign-in?2");
+    }
+
+    const userId = user_info[0].id;
 
     if (!userId) {
         // Redirect to sign-in if user is not authenticated
