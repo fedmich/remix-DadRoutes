@@ -35,6 +35,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     const firstName = idToken.given_name || "";
     const lastName = idToken.family_name || "";
+    const email = idToken.email || "";
+    const picture = idToken.picture || "";
     const userInfoJson = JSON.stringify(idToken);
 
     const session = await getSession(request.headers.get("Cookie"));
@@ -46,8 +48,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
         } else {
             try {
                 await query(
-                    'INSERT INTO users (google_sub, first_name, last_name, userinfo) VALUES ($1, $2, $3, $4)',
-                    [idToken.sub, firstName, lastName, userInfoJson]
+                    'INSERT INTO users (google_sub, email, first_name, last_name, picture, userinfo) VALUES ($1, $2, $3, $4, $5, $6)',
+                    [idToken.sub, email, firstName, lastName, picture, userInfoJson]
                 );
                 session.set("userId", idToken.sub); // Store user info in the session
                 await disconnectDB();
