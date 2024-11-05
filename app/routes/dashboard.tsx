@@ -2,6 +2,7 @@
 import { getSession } from "~/lib/session"; // Import your session management
 
 import { LoaderFunction, json } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import Layout from "~/components/Layout";
 import { connectAndQuery } from "~/lib/db";
