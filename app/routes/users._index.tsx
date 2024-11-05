@@ -9,7 +9,7 @@ import Layout from "~/components/Layout";
 // Loader function to fetch users
 export let loader: LoaderFunction = async () => {
   // Query to fetch random 25 users
-  const queryText = 'SELECT * FROM users WHERE active = TRUE ORDER BY RANDOM() LIMIT 25';
+  const queryText = 'SELECT * FROM users WHERE active = TRUE ORDER BY num_routes < 1, followers desc, following desc LIMIT 25';
   const result = await connectAndQuery(queryText);
   return json(result.rows);
 };
@@ -36,7 +36,9 @@ export default function Users() {
               <h3 className="font-bold text-lg">{user.first_name} {user.last_name}</h3>
               <p className="text-sm text-gray-700">{user.about_bio}</p>
               <div className="text-sm text-gray-600 mt-2">
-                <span>{user.followers} Followers</span> | <span>{user.following} Following</span>
+                <span>{user.num_routes} Routes</span>
+                | <span>{user.followers} Followers</span>
+                | <span>{user.following} Following</span>
               </div>
               <a href={`/users/${user.id}`} className="text-blue-500 hover:underline mt-2">
                 View Profile
