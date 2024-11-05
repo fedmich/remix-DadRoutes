@@ -108,8 +108,7 @@ export default function Index() {
 
         <Testimonials />
 
-        
-        <Link to="/sign-in" className="text-blue-500 underline mt-8">Sign in with Google</Link>
+        <Link to="/register" className="text-blue-500 underline mt-8">Sign in with Google</Link>
       </main>
 
       <footer className="bg-white shadow py-6 mt-16 w-full">
