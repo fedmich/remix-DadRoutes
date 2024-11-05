@@ -99,10 +99,12 @@ export const action = async ({ request }) => {
   const numKids = formData.get("numKids") ? parseInt(formData.get("numKids")) : null;
   const numStops = formData.get("numStops") ? parseInt(formData.get("numStops")) : null;
 
+/*
   // Check if GPX file is provided
   if (!gpxFile || !(gpxFile instanceof File)) {
     return json({ error: "GPX file is required." }, { status: 400 });
   }
+  */
 
   // Insert the route into the database with default lat/lon as 0
   const result_route = await connectAndQuery(
