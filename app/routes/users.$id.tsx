@@ -25,11 +25,16 @@ export const loader: LoaderFunction = async ({ params }) => {
     //   await connectDB(); // Ensure connection
 
     // Fetch user data
-    const userRes = await connectAndQuery("SELECT * FROM users WHERE id = $1", [userId]);
+    const userRes = await connectAndQuery("SELECT first_name, picture, occupation, about_bio, website, twitter, youtube, instagram, linkedin, followers, following FROM users WHERE id = $1 AND active = true", [userId]);
+ 	 (!userRes) {
+        return (
+            <InvalidUser></InvalidUser>
+        )
+    }
     const user = userRes.rows[0];
 
     // Fetch count of routes using 'userid'
-    const routeCountRes = await connectAndQuery("SELECT COUNT(*) FROM routes WHERE userid = $1", [userId]);
+    const routeCountRes = await connectAndQuery("SELECT COUNT(*) FROM routes WHERE userid = $1 AND active = true", [userId]);
     const routeCount = parseInt(routeCountRes.rows[0].count, 10);
 
     // Fetch routes for the user
@@ -60,7 +65,7 @@ export default function UserProfile() {
             </nav>
 
 
-            <div style={{ maxWidth: "800px", margin: "0 auto", padding: "20px" }}>
+            <div style={{ maxWidth: "1024px", margin: "0 auto", padding: "20px" }}>
                 {/* Cover Photo */}
                 <div
                     style={{

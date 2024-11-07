@@ -27,8 +27,14 @@ export const loader: LoaderFunction = async ({ request }) => {
     `SELECT routes.*, users.first_name || ' ' || users.last_name AS user 
      FROM routes 
      LEFT JOIN users ON routes.userid = users.id 
-     WHERE routes.name ILIKE $1 AND routes.active = true`,
-    [`%${query}%`]
+     WHERE 
+     routes.active = true
+     AND (
+      routes.name ILIKE $1
+      OR routes.description ILIKE $2
+      )
+      `,
+    [`%${query}%`, `%${query}%`]
   );
 
   return json({ routes: result.rows, query }); // Return routes and query
@@ -63,6 +69,7 @@ export default function Search() {
       <table className="styled-table">
         <thead>
           <tr>
+            <th>#</th>
             <th onClick={() => handleSort('name')}>Name</th>
             <th onClick={() => handleSort('user')}>User</th>
             <th onClick={() => handleSort('difficulty')}>Difficulty</th>
@@ -72,10 +79,20 @@ export default function Search() {
           </tr>
         </thead>
         <tbody>
-          {routes.map((route) => (
+          {routes.map((route, index) => (
             <tr key={route.id}>
+              <td>{index+1}</td>
               <td>
                 <Link to={`/routes/${route.id}`}>{route.name}</Link>
+                {route.description && 
+                      <>
+                      <p className="routeDescription">
+                      {route.description}
+                      </p>
+                        
+                      </>
+                    }
+
               </td>
               <td>{route.user}</td>
               <td>{route.difficulty}</td>

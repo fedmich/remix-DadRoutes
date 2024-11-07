@@ -20,18 +20,34 @@ const UserRoutes: React.FC<UserRoutesProps> = ({ routes }) => {
           <table className="styled-table">
             <thead>
               <tr>
+                <th>#</th>
                 <th>Route Name</th>
                 <th>Difficulty</th>
                 <th>Stops</th>
+                <th>Kids</th>
                 <th colSpan={2}>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {routes.map(route => (
+              {routes.map((route, index) => (
+                // waypoints.map((waypoint, index) =>
                 <tr key={route.id}>
-                  <td>{route.name}</td>
+                  <td>{index +1}</td>
+                  <td>
+                    {route.name}
+                    {route.description && 
+                      <>
+                      <p className="routeDescription">
+                      {route.description}
+                      </p>
+                        
+                      </>
+                    }
+
+                  </td>
                   <td>{route.difficulty}</td>
                   <td>{route.num_stops}</td>
+                  <td>{route.num_kids}</td>
                   <td>
 
                     <Link to={`/routes/${route.id}`}>
