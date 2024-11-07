@@ -41,7 +41,7 @@ export const query = async (text: string, params?: any[]) => {
   if (!client) {
     throw new Error('Database client is not connected. Please call connectDB first.');
   }
-  
+
   const res = await client.query(text, params);
   return res;
 };
@@ -56,7 +56,14 @@ export const disconnectDB = async () => {
 
 // Expose a way to manually connect and query
 export const connectAndQuery = async (text: string, params?: any[]) => {
-  await connectDB(); // Connect when querying
-  const result = await query(text, params);
-  return result;
+
+  if (text) {
+    await connectDB(); // Connect when querying
+    const result = await query(text, params);
+    return result;
+
+  } else {
+    console.log("Connecting to database"); // Log query details
+    await connectDB(); // Connect when querying
+  }
 };
