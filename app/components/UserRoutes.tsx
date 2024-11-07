@@ -11,12 +11,11 @@ type UserRoutesProps = {
 
 const UserRoutes: React.FC<UserRoutesProps> = ({ routes }) => {
   return (
-    <div>
+    <div className='mt-8'>
 
       {routes.length > 0 ? (
         <div>
-
-          <h3>My Routes</h3>
+          <h3 className="mt-4 text-xl font-bold text-gray-800">My Routes</h3>
           <table className="styled-table">
             <thead>
               <tr>
@@ -32,15 +31,15 @@ const UserRoutes: React.FC<UserRoutesProps> = ({ routes }) => {
               {routes.map((route, index) => (
                 // waypoints.map((waypoint, index) =>
                 <tr key={route.id}>
-                  <td>{index +1}</td>
+                  <td>{index + 1}</td>
                   <td>
                     {route.name}
-                    {route.description && 
+                    {route.description &&
                       <>
-                      <p className="routeDescription">
-                      {route.description}
-                      </p>
-                        
+                        <p className="routeDescription">
+                          {route.description}
+                        </p>
+
                       </>
                     }
 
@@ -65,10 +64,29 @@ const UserRoutes: React.FC<UserRoutesProps> = ({ routes }) => {
           </table>
         </div>
       ) : (
-        <p>This user hasn't uploaded any routes yet.</p>
+        <div>
+          <h3 className="mt-4 text-xl font-bold text-gray-800">My Routes</h3>
+          <table className="styled-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Route Name</th>
+                <th>Difficulty</th>
+                <th>Stops</th>
+                <th>Kids</th>
+                <th colSpan={2}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colSpan="7">
+                  <p>This user hasn't uploaded any routes yet.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       )}
-
-
     </div>
 
   );
