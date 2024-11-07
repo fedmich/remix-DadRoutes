@@ -26,7 +26,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 
     // Fetch user data
     const userRes = await connectAndQuery("SELECT first_name, picture, occupation, about_bio, website, twitter, youtube, instagram, linkedin, followers, following FROM users WHERE id = $1 AND active = true", [userId]);
- 	 (!userRes) {
+ 	if (!userRes) {
         return (
             <InvalidUser></InvalidUser>
         )
