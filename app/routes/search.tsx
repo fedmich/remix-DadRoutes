@@ -5,6 +5,7 @@ import { connectAndQuery } from '~/lib/db';
 import Layout from '~/components/Layout';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import '~/styles/main.css';
 import '~/search.css'; // Import CSS file for styling
 
 interface Route {
@@ -67,7 +68,7 @@ export default function Search() {
             <th onClick={() => handleSort('difficulty')}>Difficulty</th>
             <th onClick={() => handleSort('num_stops')}>Stops</th>
             <th onClick={() => handleSort('num_kids')}>Kids</th>
-            <th>Actions</th>
+            <th colSpan={2}>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -83,6 +84,11 @@ export default function Search() {
               <td>
                 <Link to={`/routes/${route.id}`}>
                   <button className="view-button">View</button>
+                </Link>
+              </td>
+              <td>
+                <Link to={`/download/gpx/${route.id}`}>
+                  <button className="download-button ">Download</button>
                 </Link>
               </td>
             </tr>

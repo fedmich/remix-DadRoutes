@@ -37,3 +37,18 @@
   .view-button:hover {
     background-color: #0056b3;
   }
+
+  .download-button {
+    background-color: #5CC984;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .download-button:hover {
+    background-color: #006600;
+  }
+
+  

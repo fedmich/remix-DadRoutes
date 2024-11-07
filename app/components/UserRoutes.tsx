@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { connectAndQuery } from '~/lib/db';
 import type { Route } from '~/types';
 import '~/styles/main.css'; // Import CSS file for styling
+import { Link } from 'react-router-dom';
 
 type UserRoutesProps = {
   routes: Route[];
@@ -22,7 +23,7 @@ const UserRoutes: React.FC<UserRoutesProps> = ({ routes }) => {
                 <th>Route Name</th>
                 <th>Difficulty</th>
                 <th>Stops</th>
-                <th>Actions</th>
+                <th colSpan={2}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -32,7 +33,15 @@ const UserRoutes: React.FC<UserRoutesProps> = ({ routes }) => {
                   <td>{route.difficulty}</td>
                   <td>{route.num_stops}</td>
                   <td>
-                    <a href={`/routes/${route.id}`}>View</a>
+
+                    <Link to={`/routes/${route.id}`}>
+                      <button className="view-button">View</button>
+                    </Link>
+                  </td>
+                  <td>
+                    <Link to={`/download/gpx/${route.id}`}>
+                      <button className="download-button ">Download</button>
+                    </Link>
                   </td>
                 </tr>
               ))}
