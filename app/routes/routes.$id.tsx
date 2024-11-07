@@ -16,10 +16,13 @@ import styles from "~/RouteDetail.module.css"; // Import your CSS module
 type Route = {
   id: number;
   name: string;
+  description: string;
   latitude: number;
   longitude: number;
   difficulty: string;
   num_stops: number;
+  num_kids: number;
+  picture: string;
 };
 
 
@@ -28,6 +31,7 @@ type Waypoint = {
   name_poi: string;
   latitude: number;
   longitude: number;
+  description: string;
   // add other fields as needed
 };
 
@@ -60,6 +64,10 @@ export let loader: LoaderFunction = async ({ params }) => {
 
   // Fetch the API key from environment variables
   const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
+  
+  if (!googleMapsApiKey) {
+    return <p>Google Maps API key is not available.</p>;
+  }
 
   return json<LoaderData>({
     route: routeResult.rows[0],
@@ -93,6 +101,7 @@ const RouteDetail = () => {
       <div className={styles.container}>
         <div className={styles.sidebar}>
           <h1 className={styles.routeTitle}>{route.name}</h1>
+          <h3 className={styles.routeDescription}>{route.description}</h3>
           <div className={styles.routeInfo}>
             <p><strong>Difficulty:</strong> {route.difficulty}</p>
             <p><strong>Number of Stops:</strong> {route.num_stops}</p>

@@ -1,11 +1,13 @@
 // components/GoogleMapWithWaypoints.tsx
-import { GoogleMap, LoadScript, Marker, Polyline } from "@react-google-maps/api";
+import { GoogleMap, LoadScript, MarkerF, InfoWindowF, PolylineF } from "@react-google-maps/api";
+import React, { useState } from "react";
 
 type Waypoint = {
   id: number;
   name_poi: string;
   latitude: number;
   longitude: number;
+  description: string;
 };
 
 type GoogleMapWithWaypointsProps = {
@@ -19,7 +21,13 @@ const GoogleMapWithWaypoints: React.FC<GoogleMapWithWaypointsProps> = ({ waypoin
     return <p>Google Maps API key is not available.</p>;
   }
 
+  const [activeMarker, setActiveMarker] = useState<number | null>(null);
 
+
+  // Define marker icons
+  const defaultIcon = "https://res.cloudinary.com/dzhlavugc/image/upload/c_pad,h_50/v1730994682/d73443fe-5b1d-40b7-a173-137bda937169.png";
+  const startIcon = "https://res.cloudinary.com/dzhlavugc/image/upload/c_pad,h_50/v1730994327/9978f02d-ae0a-4693-996d-9f8a950d2302.png";
+  const endIcon = "https://res.cloudinary.com/dzhlavugc/image/upload/c_pad,h_50/v1730948335/f0193587-03c5-4db9-8cc0-de5ab08ae54e.png";
   console.log("Received center coordinates:", center);
 
   return (
@@ -27,21 +35,42 @@ const GoogleMapWithWaypoints: React.FC<GoogleMapWithWaypointsProps> = ({ waypoin
       <GoogleMap
         center={center}
         zoom={13}
-        mapContainerStyle={{ width: "100%", height: "400px" }}
+        mapContainerStyle={{ width: "100%", height: "100vh" }}
       >
-        {waypoints.map((waypoint) => (
-          <Marker
+        {waypoints.map((waypoint, index) => (
+
+          <MarkerF
             key={waypoint.id}
             position={{ lat: waypoint.latitude, lng: waypoint.longitude }}
-            title={waypoint.name_poi}
-          />
+            icon={
+              index === 0
+                ? startIcon
+                : index === waypoints.length - 1
+                  ? endIcon
+                  : defaultIcon
+            }
+            onMouseOver={() => setActiveMarker(waypoint.id)}
+            onMouseOut={() => setActiveMarker(null)}
+          >
+            {activeMarker === waypoint.id && (
+              <InfoWindowF
+                position={{ lat: waypoint.latitude, lng: waypoint.longitude }}>
+                <div style={{ fontSize: "14px" }}>
+                  <b>{waypoint?.name_poi}</b>
+                  <br />
+                  <small>{waypoint?.description}</small>
+                </div>
+              </InfoWindowF>
+            )}
+          </MarkerF>
+
         ))}
-        <Polyline
+        <PolylineF
           path={waypoints.map((waypoint) => ({
             lat: waypoint.latitude,
             lng: waypoint.longitude,
           }))}
-          options={{ strokeColor: "#FF0000", strokeWeight: 2 }}
+          options={{ strokeColor: "#05C653", strokeWeight: 2 }}
         />
       </GoogleMap>
     </LoadScript>
