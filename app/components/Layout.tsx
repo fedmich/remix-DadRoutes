@@ -19,9 +19,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <Link to="/" className="text-gray-600 hover:text-blue-500">Home</Link>
           <Link to="/users" className="text-gray-600 hover:text-blue-500">Community</Link>
           <Link to="/about" className="text-gray-600 hover:text-blue-500">About</Link>
-          <Link to="/contact" className="text-gray-600 hover:text-blue-500">Contact</Link>
+          {/* <Link to="/contact" className="text-gray-600 hover:text-blue-500">Contact</Link> */}
           <Link to="/blog" className="text-gray-600 hover:text-blue-500">Blog</Link>
-          <Link to="/privacy" className="text-gray-600 hover:text-blue-500">Privacy Policy</Link>
+          <Link to="/privacy" className="text-gray-600 hover:text-blue-500">Privacy</Link>
         </nav>
       </footer>
     </div>
