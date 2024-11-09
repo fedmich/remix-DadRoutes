@@ -10,6 +10,12 @@ import type { Route } from "~/types";
 
 import '~/styles/main.css'; // Import CSS file for styling
 
+export const meta: MetaFunction = () => [
+    { title: "Dashboard - Dad Routes" },
+    // { name: "description", content: "Discover the best routes and tips for family adventures." },
+    // { name: "keywords", content: "family, travel, routes, adventures, Dad Routes" },
+];
+
 export const loader: LoaderFunction = async ({ request }) => {
     const session = await getSession(request.headers.get("Cookie"));
 
