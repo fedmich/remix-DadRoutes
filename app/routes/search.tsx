@@ -19,6 +19,12 @@ interface Route {
   user: string; // User name from the users table
 }
 
+export const meta: MetaFunction = () => [
+  { title: "Search - Dad Routes" },
+  // { name: "description", content: "Discover the best routes and tips for family adventures." },
+  // { name: "keywords", content: "family, travel, routes, adventures, Dad Routes" },
+];
+
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const query = url.searchParams.get('q') || '';
@@ -81,17 +87,17 @@ export default function Search() {
         <tbody>
           {routes.map((route, index) => (
             <tr key={route.id}>
-              <td>{index+1}</td>
+              <td>{index + 1}</td>
               <td>
                 <Link to={`/routes/${route.id}`}>{route.name}</Link>
-                {route.description && 
-                      <>
-                      <p className="routeDescription">
+                {route.description &&
+                  <>
+                    <p className="routeDescription">
                       {route.description}
-                      </p>
-                        
-                      </>
-                    }
+                    </p>
+
+                  </>
+                }
 
               </td>
               <td>{route.user}</td>

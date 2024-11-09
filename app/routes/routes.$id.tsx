@@ -41,6 +41,12 @@ type LoaderData = {
   googleMapsApiKey?: string; // Optional in case it's undefined
 };
 
+export const meta: MetaFunction = () => [
+  { title: "Route # - Dad Routes" },
+  { name: "description", content: "Discover the best routes and tips for family adventures." },
+  { name: "keywords", content: "family, travel, routes, adventures, Dad Routes" },
+];
+
 export let loader: LoaderFunction = async ({ params }) => {
   const routeId = params.id;
 

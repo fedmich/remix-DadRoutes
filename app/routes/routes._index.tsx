@@ -7,6 +7,12 @@ import { Link } from 'react-router-dom';
 import Layout from "~/components/Layout";
 
 
+export const meta: MetaFunction = () => [
+  { title: "Routes - Dad Routes" },
+  { name: "description", content: "Discover the best routes and tips for family adventures." },
+  { name: "keywords", content: "family, travel, routes, adventures, Dad Routes" },
+];
+
 export let loader: LoaderFunction = async ({ request }: Parameters<LoaderFunction>[0]) => {
   const userId = 4/* Get user ID from session */;
 

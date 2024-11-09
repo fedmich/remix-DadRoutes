@@ -3,6 +3,13 @@ import { Link } from "@remix-run/react";
 
 import Layout from "~/components/Layout";
 
+
+export const meta: MetaFunction = () => [
+  { title: "Privacy Policy - Dad Routes" },
+  { name: "description", content: "Privacy Policy of Dad Routes" },
+  { name: "keywords", content: "family, travel, routes, adventures, Dad Routes" },
+];
+
 export default function Privacy() {
   return (
     <Layout>

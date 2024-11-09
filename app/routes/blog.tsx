@@ -3,6 +3,12 @@ import { Link } from "@remix-run/react";
 
 import Layout from "~/components/Layout";
 
+
+export const meta: MetaFunction = () => [
+  { title: "Blog news - Dad Routes" },
+  { name: "description", content: "Discover the best routes and tips for family adventures." },
+  { name: "keywords", content: "family, travel, routes, adventures, Dad Routes" },
+];
 export default function Blog() {
   return (
     <Layout>

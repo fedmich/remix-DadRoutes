@@ -15,6 +15,14 @@ import { useLoaderData } from "@remix-run/react";;
 const center = { lat: 41.8781, lng: -93.0977 }; // Coordinates for Iowa, USA
 const libraries = ["places"];
 
+
+export const meta: MetaFunction = () => [
+  { title: "New route - Dad Routes" },
+  // { name: "description", content: "Discover the best routes and tips for family adventures." },
+  // { name: "keywords", content: "family, travel, routes, adventures, Dad Routes" },
+];
+
+
 export const loader: LoaderFunction = async ({ request }) => {
   const session = await getSession(request.headers.get("Cookie"));
   // Add any server-side logic to fetch data if needed
