@@ -29,6 +29,11 @@ type LoaderData = {
 };
 
 
+export const meta: MetaFunction = () => [
+    { title: "Venues - Dad Routes" },
+    // { name: "description", content: "Discover the best routes and tips for family adventures." },
+    // { name: "keywords", content: "family, travel, routes, adventures, Dad Routes" },
+  ];
 
 export const loader: LoaderFunction = async ({ request }) => {
     const lat = 41.57006;

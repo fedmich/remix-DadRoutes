@@ -6,6 +6,12 @@ import { connectAndQuery } from '~/lib/db';
 import Layout from "~/components/Layout";
 
 
+export const meta: MetaFunction = () => [
+  { title: "Users - Dad Routes" },
+  // { name: "description", content: "Discover the best routes and tips for family adventures." },
+  // { name: "keywords", content: "family, travel, routes, adventures, Dad Routes" },
+];
+
 // Loader function to fetch users
 export let loader: LoaderFunction = async () => {
   // Query to fetch random 25 users

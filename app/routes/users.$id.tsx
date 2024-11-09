@@ -16,6 +16,12 @@ type LoaderData = {
     routes: Route[]; // Add the type for routes
 };
 
+export const meta: MetaFunction = () => [
+  { title: "User/ - Dad Routes" },
+  { name: "description", content: "Discover the best routes and tips for family adventures." },
+  { name: "keywords", content: "family, travel, routes, adventures, Dad Routes" },
+];
+
 export const loader: LoaderFunction = async ({ params }) => {
     const userId = params.id;
     if (!userId) {
