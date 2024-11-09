@@ -1,6 +1,13 @@
 // app/routes/about.tsx
 import Layout from "~/components/Layout";
 
+
+export const meta: MetaFunction = () => [
+  { title: "About - Dad Routes" },
+  { name: "description", content: "Discover the best routes and tips for family adventures." },
+  { name: "keywords", content: "family, travel, routes, adventures, Dad Routes" },
+];
+
 export default function About() {
   return (
     <Layout>
