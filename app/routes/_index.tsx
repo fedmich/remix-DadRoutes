@@ -162,7 +162,7 @@ export default function Index() {
           <a href="/about" className="text-gray-600 hover:text-blue-500">About</a>
           <a href="/contact" className="text-gray-600 hover:text-blue-500">Contact</a>
           <a href="/blog" className="text-gray-600 hover:text-blue-500">Blog</a>
-          <a href="/privacy" className="text-gray-600 hover:text-blue-500">Privacy Policy</a>
+          <a href="/privacy" className="text-gray-600 hover:text-blue-500">Privacy</a>
         </nav>
       </footer>
     </div>
