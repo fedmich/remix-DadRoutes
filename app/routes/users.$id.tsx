@@ -22,6 +22,13 @@ export const meta: MetaFunction = () => [
   { name: "keywords", content: "family, travel, routes, adventures, Dad Routes" },
 ];
 
+
+const image_covers = [
+    '/covers/cover-1.jpg',
+    '/covers/cover-2.jpg',
+    '/covers/cover-3.jpg',
+];
+
 export const loader: LoaderFunction = async ({ params }) => {
     const userId = params.id;
     if (!userId) {
@@ -60,6 +67,10 @@ export default function UserProfile() {
             <InvalidUser></InvalidUser>
         )
     }
+
+    // Determine which image to show by dividing the time by 10, 
+    // and using modulo to ensure the result cycles through the images.
+    const coverIndex = Math.floor(Date.now() / 1000 / 10) % image_covers.length;
 
     return (
 
