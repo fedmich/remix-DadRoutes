@@ -25,7 +25,7 @@ const GoogleMapWithWaypoints: React.FC<GoogleMapWithWaypointsProps> = ({ waypoin
 
 
   // Define marker icons
-  const defaultIcon = "https://res.cloudinary.com/dzhlavugc/image/upload/c_pad,h_50/v1730994682/d73443fe-5b1d-40b7-a173-137bda937169.png";
+  const defaultIcon = "https://res.cloudinary.com/dzhlavugc/image/upload/c_pad,w_50,h_50/v1731213768/bike_dzjp0m.png";
   const startIcon = "https://res.cloudinary.com/dzhlavugc/image/upload/c_pad,h_50/v1730994327/9978f02d-ae0a-4693-996d-9f8a950d2302.png";
   const endIcon = "https://res.cloudinary.com/dzhlavugc/image/upload/c_pad,h_50/v1730948335/f0193587-03c5-4db9-8cc0-de5ab08ae54e.png";
   console.log("Received center coordinates:", center);
