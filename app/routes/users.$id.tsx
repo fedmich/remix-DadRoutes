@@ -87,7 +87,11 @@ export default function UserProfile() {
                 <div
                     style={{
                         width: "100%",
-                        height: "300px",
+                        position: "relative",
+                    }}
+                    >
+                    <div
+                    style={{
                         backgroundColor: "#ddd",
                         position: "relative",
                         borderRadius: "8px",
@@ -95,6 +99,8 @@ export default function UserProfile() {
                     }}
                 >
                     <img src={image_covers[coverIndex]} alt="Banner Profile" class="w-full rounded-t-lg" />
+                </div>
+                    
 
                     <div
                         style={{
