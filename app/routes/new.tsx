@@ -338,16 +338,16 @@ const NewRoutePage = () => {
 
     // Update the waypoints state
     setWaypoints(updatedWaypoints);
-
-    // If it's the source marker, update the source state
-    if (updatedMarker.type === "source") {
-      setSource(updatedMarker);
-    }
-
-    // If it's the destination marker, update the destination state
-    else if (updatedMarker.type === "destination") {
-      setDestination(updatedMarker);
-    }
+    /* 
+        // If it's the source marker, update the source state
+        if (updatedMarker.type === "source") {
+          setSource(updatedMarker);
+        }
+    
+        // If it's the destination marker, update the destination state
+        else if (updatedMarker.type === "destination") {
+          setDestination(updatedMarker);
+        } */
 
 
     // Update polyline path
