@@ -312,7 +312,8 @@ const NewRoutePage = () => {
   }, [waypoints]);
 
 
-  const handleMarkerDragEnd = (index: number, newPosition: google.maps.LatLng) => {
+  const handleMarkerDragEnd = (marker: any, index: number, newPosition: google.maps.LatLng) => {
+
 
     // Update the marker's position in the state
     const updatedMarkers = [...markers];
@@ -352,6 +353,8 @@ const NewRoutePage = () => {
     // Update polyline path
     updatePolyline(updatedWaypoints);
 
+
+    snapToNearestPOI(marker, newPosition);
 
   };
 
@@ -630,7 +633,7 @@ const NewRoutePage = () => {
                   position={marker.position}
                   label={marker.label}
                   draggable
-                  onDragEnd={(e) => handleMarkerDragEnd(index, e.latLng)} // Pass the latLng of the event
+                  onDragEnd={(e) => handleMarkerDragEnd(marker, index, e.latLng, marker)} // Pass the latLng of the event
                 >
                   <InfoWindowF position={marker.position}>
                     <div>
