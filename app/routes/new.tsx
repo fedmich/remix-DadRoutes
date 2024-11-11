@@ -434,6 +434,14 @@ const NewRoutePage = () => {
                   <h3 className="font-semibold text-lg">{waypoint.name || `Waypoint ${idx + 1}`}</h3>
                   <p className="text-sm text-gray-600">Lat: {waypoint.lat.toFixed(6)}, Lng: {waypoint.lng.toFixed(6)}</p>
                 </div>
+
+
+                <button
+                  onClick={() => removeWaypoint(idx)} // Logic for removing waypoint
+                  className="text-red-500 ml-2"
+                >
+                  ❌
+                </button>
               </li>
             ))}
           </ul>
