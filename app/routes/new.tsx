@@ -82,8 +82,14 @@ const NewRoutePage = () => {
       return;
     }
 
-    const gpxData = `
-      <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+    // Ensure there are at least 2 waypoints to create a polyline
+    if (waypoints.length < 2) {
+      alert("At least two waypoints are required to create a path.");
+      return;
+    }
+
+    // Create the GPX data with waypoints and polyline
+    const gpxData = `<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
       <gpx version="1.1" creator="Dad Routes">
         <metadata>
           <name>${routeName}</name>
@@ -98,15 +104,38 @@ const NewRoutePage = () => {
             ${waypoints
         .map(
           (wp) => `
-              <trkpt lat="${wp.lat}" lon="${wp.lng}">
-                <name>${wp.name}</name>
-              </trkpt>`
+                <trkpt lat="${wp.lat.toFixed(6)}" lon="${wp.lng.toFixed(6)}">
+                  <name>${wp.name}</name>
+                </trkpt>`
         )
         .join("\n")}
           </trkseg>
         </trk>
+  
+        <extensions>
+          <path>
+            ${waypoints
+        .map(
+          (wp, index) => {
+            if (index < waypoints.length - 1) {
+              return `
+                      <trkpt lat="${wp.lat.toFixed(6)}" lon="${wp.lng.toFixed(6)}">
+                        <name>${wp.name}</name>
+                      </trkpt>
+                      <trkpt lat="${waypoints[index + 1].lat.toFixed(6)}" lon="${waypoints[index + 1].lng.toFixed(6)}">
+                        <name>${waypoints[index + 1].name}</name>
+                      </trkpt>`;
+            }
+            return "";
+          }
+        )
+        .join("\n")}
+          </path>
+        </extensions>
       </gpx>
     `;
+
+    // Create the GPX Blob and download
     const blob = new Blob([gpxData], { type: "application/gpx+xml" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -494,6 +523,19 @@ const NewRoutePage = () => {
                   </InfoWindowF>
                 </MarkerF>
               ))}
+
+              {/* Render polyline if there are at least 2 waypoints */}
+              {waypoints.length > 1 && (
+                <PolylineF
+                  path={updatePolyline(waypoints)} // Path for polyline
+                  options={{
+                    geodesic: true,
+                    strokeColor: "#0000FF", // Blue color for polyline
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2,
+                  }}
+                />
+              )}
 
             </GoogleMap>
           )}
