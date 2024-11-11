@@ -149,10 +149,10 @@ const NewRoutePage = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "waypoints.gpx";
+    link.download = `DadRoutes_${routeName.replace(/\s+/g, "_")}_route.gpx`;
     link.click();
     URL.revokeObjectURL(url);
-  }
+  };
 
   // Save waypoints to localStorage on "Save to Account"
   const saveToAccount = () => {
@@ -342,6 +342,10 @@ const NewRoutePage = () => {
       { ...newMarker.position, name: newMarker.name },
     ]);
 
+
+    // If there are at least two waypoints, update the polyline
+    updatePolyline([...waypoints, { lat, lng }]);
+
     // Clear the input field
     document.getElementById("quick-add-input").value = "";
   };
@@ -438,7 +442,7 @@ const NewRoutePage = () => {
             />
           </div>
 
-
+          {/* 
           <div>
             <h3>Source</h3>
             <input
@@ -459,6 +463,7 @@ const NewRoutePage = () => {
             // On input change, call the API or logic to handle destination address selection
             />
           </div>
+          */}
 
           {/* Quick Add Section */}
           <fieldset className="my-4">
@@ -478,12 +483,15 @@ const NewRoutePage = () => {
           </fieldset>
 
 
+          {/* 
           <button
             onClick={addWaypoint}
             className="mt-4 w-full bg-blue-500 text-white py-2 rounded"
           >
             Place markers
           </button>
+          */}
+
           <h3 className="mt-6">Waypoints</h3>
 
 
