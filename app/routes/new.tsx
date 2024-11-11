@@ -51,9 +51,17 @@ const NewRoutePage = () => {
   const [numStops, setNumStops] = useState(0);
   const [description, setDescription] = useState("");
 
+  const [map, setMap] = useState(null); // State to store the map object
+
+  // To keep track of the polyline
+  let polyline = null;
+  let pathArray = [];
 
 
-
+  // Handle map load event to get the map instance
+  const handleMapLoad = (mapInstance) => {
+    setMap(mapInstance);
+  };
 
   // Toggle sidebar for mobile
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
@@ -252,6 +260,12 @@ const NewRoutePage = () => {
     else if (updatedMarker.type === "destination") {
       setDestination(updatedMarker);
     }
+
+
+    // Update polyline path
+    updatePolyline(updatedWaypoints);
+
+
   };
 
 
@@ -269,8 +283,41 @@ const NewRoutePage = () => {
 
   // Function to update polyline (will be called when adding markers)
   const updatePolyline = (waypoints) => {
+    // If there are less than 2 waypoints, don't draw a polyline
+    if (waypoints.length < 2) {
+      if (polyline) {
+        polyline.setMap(null); // Remove the polyline if it exists
+      }
+      return;
+    }
 
-  }
+    // If we have at least 2 waypoints, create or update the polyline
+    if (polyline) {
+      polyline.setMap(null); // Remove the old polyline
+    }
+
+    // Create the new path from waypoints
+    const pathArray = waypoints.map((wp) => new google.maps.LatLng(wp.lat, wp.lng));
+
+    // Create a new polyline with the updated waypoints
+    polyline = new google.maps.Polyline({
+      path: pathArray,
+      geodesic: true,
+      strokeColor: "#0000FF", // Blue color for the polyline
+      strokeOpacity: 1.0,
+      strokeWeight: 2,
+    });
+
+    // Set the polyline on the map
+    polyline.setMap(map);  // `map` is your Google Map instance
+  };
+  const handleRemoveWaypoint = (idx) => {
+    const newWaypoints = waypoints.filter((_, i) => i !== idx);
+    setWaypoints(newWaypoints);
+
+    // Update the polyline after removing a waypoint
+    updatePolyline(newWaypoints);
+  };
 
   const handleQuickAdd = () => {
     const input = document.getElementById("quick-add-input").value;
@@ -504,6 +551,7 @@ const NewRoutePage = () => {
               mapContainerStyle={{ width: "100%", height: "100vh" }}
               center={center}
               zoom={14}
+              onLoad={handleMapLoad} // Store map instance on load
               onClick={handleMapClick} // Handle map click to add markers
             >
               {markers.map((marker, index) => (
