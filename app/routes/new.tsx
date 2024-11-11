@@ -267,6 +267,10 @@ const NewRoutePage = () => {
     }
   };
 
+  // Function to update polyline (will be called when adding markers)
+  const updatePolyline = (waypoints) => {
+
+  }
 
   const handleQuickAdd = () => {
     const input = document.getElementById("quick-add-input").value;
