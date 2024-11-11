@@ -6,6 +6,7 @@ import {
   LoadScript,
   MarkerF,
   InfoWindowF,
+  PolylineF,
   Autocomplete,
   useLoadScript,
 } from "@react-google-maps/api";
