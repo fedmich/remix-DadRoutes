@@ -14,7 +14,7 @@ import { getSession } from "~/lib/session"; // Adjust to where session handling 
 import { useLoaderData } from "@remix-run/react";;
 
 const center = { lat: 41.8781, lng: -93.0977 }; // Coordinates for Iowa, USA
-const libraries = ["places"];
+const libraries = ["places", "geometry"];
 
 
 export const meta: MetaFunction = () => [
@@ -58,9 +58,90 @@ const NewRoutePage = () => {
   let pathArray = [];
 
 
+  const currentRadius = 450; // Define the radius for POI search
+  let service = null; // Initialize `service` as null
+
+  // Function to snap marker to the nearest POI
+  function snapToNearestPOI(marker, location) {
+    // Check if `map` is available and `service` is initialized
+    if (map && !service) {
+      service = new google.maps.places.PlacesService(map);
+    }
+
+    // Ensure `service` is defined before proceeding
+    if (!service) {
+      console.error("Google Maps PlacesService is not initialized.");
+      return;
+    }
+
+    const request = {
+      location: location,
+      radius: currentRadius,
+      type: ['point_of_interest'], // Type of places to search for
+    };
+
+    service.nearbySearch(request, (results, status) => {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        let nearestPOI = null;
+        let shortestDistance = Infinity;
+        /* 
+                console.log(results);
+         */
+        results.forEach((place) => {
+          const distance = google.maps.geometry.spherical.computeDistanceBetween(location, place.geometry.location);
+          if (distance < shortestDistance) {
+            nearestPOI = place;
+            shortestDistance = distance;
+          }
+        });
+
+        if (nearestPOI) {
+          const poiLocation = nearestPOI.geometry.location;
+          /* 
+                    console.log(nearestPOI);
+                    console.log(poiLocation);
+           */
+          // Update the marker position to the nearest POI
+          // This will trigger a re-render of the marker
+          setMarkers((prevMarkers) => {
+            return prevMarkers.map((m) =>
+              m === marker
+                ? { ...m, position: { lat: poiLocation.lat(), lng: poiLocation.lng() } }
+                : m
+            );
+          });
+
+          // Update the waypoint info with POI data
+          setWaypoints((prevWaypoints) => {
+            return prevWaypoints.map((w, index) =>
+              index === markers.indexOf(marker)
+                ? {
+                  ...w,
+                  name: nearestPOI.name,
+                  thumbnail: nearestPOI.photos
+                    ? nearestPOI.photos[0].getUrl({ maxWidth: 100, maxHeight: 100 })
+                    : '',
+                  description: nearestPOI.vicinity || '',
+                }
+                : w
+            );
+          });
+
+        }
+      }
+    });
+  }
+
+
   // Handle map load event to get the map instance
   const handleMapLoad = (mapInstance) => {
     setMap(mapInstance);
+
+    // Check if `map` is available and `service` is initialized
+    if (map && !service) {
+      service = new google.maps.places.PlacesService(map);
+    }
+
   };
 
   // Toggle sidebar for mobile
@@ -113,9 +194,10 @@ const NewRoutePage = () => {
             ${waypoints
         .map(
           (wp) => `
-                <trkpt lat="${wp.lat.toFixed(6)}" lon="${wp.lng.toFixed(6)}">
-                  <name>${wp.name}</name>
-                </trkpt>`
+              <trkpt lat="${wp.lat.toFixed(6)}" lon="${wp.lng.toFixed(6)}">
+                <name>${wp.name}</name>
+                <desc>${wp.description || ""}</desc> <!-- Include the description -->
+              </trkpt>`
         )
         .join("\n")}
           </trkseg>
@@ -124,20 +206,20 @@ const NewRoutePage = () => {
         <extensions>
           <path>
             ${waypoints
-        .map(
-          (wp, index) => {
-            if (index < waypoints.length - 1) {
-              return `
-                      <trkpt lat="${wp.lat.toFixed(6)}" lon="${wp.lng.toFixed(6)}">
-                        <name>${wp.name}</name>
-                      </trkpt>
-                      <trkpt lat="${waypoints[index + 1].lat.toFixed(6)}" lon="${waypoints[index + 1].lng.toFixed(6)}">
-                        <name>${waypoints[index + 1].name}</name>
-                      </trkpt>`;
-            }
-            return "";
+        .map((wp, index) => {
+          if (index < waypoints.length - 1) {
+            return `
+                    <trkpt lat="${wp.lat.toFixed(6)}" lon="${wp.lng.toFixed(6)}">
+                      <name>${wp.name}</name>
+                      <desc>${wp.description || ""}</desc> <!-- Include the description -->
+                    </trkpt>
+                    <trkpt lat="${waypoints[index + 1].lat.toFixed(6)}" lon="${waypoints[index + 1].lng.toFixed(6)}">
+                      <name>${waypoints[index + 1].name}</name>
+                      <desc>${waypoints[index + 1].description || ""}</desc> <!-- Include the description -->
+                    </trkpt>`;
           }
-        )
+          return "";
+        })
         .join("\n")}
           </path>
         </extensions>
@@ -222,6 +304,11 @@ const NewRoutePage = () => {
     if (waypoints.length === 0) {
       setSource(newMarker);
     }
+
+
+    snapToNearestPOI(newMarker, location);
+
+
   }, [waypoints]);
 
 
@@ -281,36 +368,11 @@ const NewRoutePage = () => {
     }
   };
 
-  // Function to update polyline (will be called when adding markers)
+
   const updatePolyline = (waypoints) => {
-    // If there are less than 2 waypoints, don't draw a polyline
-    if (waypoints.length < 2) {
-      if (polyline) {
-        polyline.setMap(null); // Remove the polyline if it exists
-      }
-      return;
-    }
-
-    // If we have at least 2 waypoints, create or update the polyline
-    if (polyline) {
-      polyline.setMap(null); // Remove the old polyline
-    }
-
-    // Create the new path from waypoints
-    const pathArray = waypoints.map((wp) => new google.maps.LatLng(wp.lat, wp.lng));
-
-    // Create a new polyline with the updated waypoints
-    polyline = new google.maps.Polyline({
-      path: pathArray,
-      geodesic: true,
-      strokeColor: "#0000FF", // Blue color for the polyline
-      strokeOpacity: 1.0,
-      strokeWeight: 2,
-    });
-
-    // Set the polyline on the map
-    polyline.setMap(map);  // `map` is your Google Map instance
+    return waypoints.map((wp) => new google.maps.LatLng(wp.lat, wp.lng)); // Convert to LatLng
   };
+
   const handleRemoveWaypoint = (idx) => {
     const newWaypoints = waypoints.filter((_, i) => i !== idx);
     setWaypoints(newWaypoints);
@@ -558,7 +620,7 @@ const NewRoutePage = () => {
             <GoogleMap
               mapContainerStyle={{ width: "100%", height: "100vh" }}
               center={center}
-              zoom={14}
+              zoom={12}
               onLoad={handleMapLoad} // Store map instance on load
               onClick={handleMapClick} // Handle map click to add markers
             >
