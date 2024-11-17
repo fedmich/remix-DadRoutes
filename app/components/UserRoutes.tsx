@@ -19,21 +19,23 @@ const UserRoutes: React.FC<UserRoutesProps> = ({ routes }) => {
           <table className="styled-table">
             <thead>
               <tr>
-                <th>#</th>
-                <th>Route Name</th>
-                <th>Difficulty</th>
-                <th>Stops</th>
-                <th>Kids</th>
-                <th colSpan={2}>Actions</th>
+                <th className="hidden md:table-cell">#</th>
+                <th className="hidden sm:table-cell">Route Name</th>
+                <th className="hidden sm:table-cell">Difficulty</th>
+                <th className="hidden md:table-cell">Stops</th>
+                <th className="hidden md:table-cell">Kids</th>
+                <th className="hidden md:table-cell" colSpan={2}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {routes.map((route, index) => (
                 // waypoints.map((waypoint, index) =>
                 <tr key={route.id}>
-                  <td>{index + 1}</td>
-                  <td>
-                    {route.name}
+                  <td className="hidden md:table-cell">{index + 1}</td>
+                  <td className="hidden sm:table-cell">
+                    <Link to={`/routes/${route.id}`}>
+                      {route.name}
+                    </Link>
                     {route.description &&
                       <>
                         <p className="routeDescription">
@@ -44,16 +46,16 @@ const UserRoutes: React.FC<UserRoutesProps> = ({ routes }) => {
                     }
 
                   </td>
-                  <td>{route.difficulty}</td>
-                  <td>{route.num_stops}</td>
-                  <td>{route.num_kids}</td>
-                  <td>
+                  <td className="hidden md:table-cell">{route.difficulty}</td>
+                  <td className="hidden md:table-cell">{route.num_stops}</td>
+                  <td className="hidden md:table-cell">{route.num_kids}</td>
+                  <td className="hidden md:table-cell">
 
                     <Link to={`/routes/${route.id}`}>
                       <button className="view-button">View</button>
                     </Link>
                   </td>
-                  <td>
+                  <td className="hidden md:table-cell">
                     <Link to={`/download/gpx/${route.id}`}>
                       <button className="download-button ">Download</button>
                     </Link>
