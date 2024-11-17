@@ -11,6 +11,8 @@ import UserRoutes from "~/components/UserRoutes";
 import defaultAvatar from '~/assets/default_avatar.png';
 import InvalidUser from "~/components/InvalidUser";
 
+import { useEffect } from "react";
+
 type LoaderData = {
     user: User;
     routeCount: number;
@@ -99,6 +101,10 @@ export default function UserProfile() {
         { platform: "Instagram", key: "instagram", baseHref: "https://instagram.com/" },
         //   { platform: "LinkedIn", key: "linkedin", baseHref: "https://linkedin.com/in/" },
     ];
+
+    useEffect(() => {
+        document.title = `${user.first_name}'s DadRoute profile`;
+    }, [user.first_name]);
 
     return (
 
