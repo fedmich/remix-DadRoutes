@@ -1,6 +1,7 @@
 // /app/routes/user/$id.tsx
 
-import { LoaderFunction, json } from "@remix-run/node";
+import { LoaderFunction, json, redirect } from "@remix-run/node";
+
 import { useLoaderData, Link } from "@remix-run/react";
 import { connectAndQuery } from "~/lib/db";
 import type { User, Route } from "~/types"; // Assume you've defined types
@@ -30,10 +31,29 @@ const image_covers = [
 ];
 
 export const loader: LoaderFunction = async ({ params }) => {
-    const userId = params.id;
-    if (!userId) {
-        throw new Error("User ID is required.");
+    const slug = params.slug;
+
+    if (!slug) {
+        throw new Response("User slug is required", { status: 400 });
     }
+
+    const query = `
+    SELECT slug , id 
+    FROM users 
+    WHERE id::text = $1 OR slug = $2
+    LIMIT 1;
+    `;
+    const result = await connectAndQuery(query, [slug, slug]);
+
+    if (result.rows.length) {
+        const slug_db = result.rows[0].slug;
+        if (slug_db != slug) {
+            return redirect(`/users/${slug_db}`);
+        }
+    } else {
+        throw new Response("No user with that ID.", { status: 400 });
+    }
+    const userId = result.rows[0].id;
 
     //   await connectDB(); // Ensure connection
 
@@ -44,7 +64,7 @@ export const loader: LoaderFunction = async ({ params }) => {
             <InvalidUser></InvalidUser>
         )
     }
-    const user = userRes.rows[0];
+    const user = userRes.rows[0] || null;
 
     // Fetch count of routes using 'userid'
     const routeCountRes = await connectAndQuery("SELECT COUNT(*) FROM routes WHERE userid = $1 AND active = true", [userId]);
