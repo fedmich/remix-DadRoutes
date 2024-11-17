@@ -72,6 +72,14 @@ export default function UserProfile() {
     // and using modulo to ensure the result cycles through the images.
     const coverIndex = Math.floor(Date.now() / 1000 / 10) % image_covers.length;
 
+    const socialLinks = [
+        { platform: "Twitter", key: "twitter", baseHref: "https://twitter.com/" },
+        // { platform: "Website", key: "website", baseHref: "" },
+        { platform: "YouTube", key: "youtube", baseHref: "https://youtube.com/" },
+        { platform: "Instagram", key: "instagram", baseHref: "https://instagram.com/" },
+        //   { platform: "LinkedIn", key: "linkedin", baseHref: "https://linkedin.com/in/" },
+    ];
+
     return (
 
         <Layout>
@@ -158,11 +166,18 @@ export default function UserProfile() {
 
                         {/* <!-- Social Links --> */}
                         <div class="flex items-center mt-4 space-x-4">
-                            <a href={user.twitter || '#'} class="text-blue-500 hover:underline"> Twitter </a>
-                            <a href={user.website || '#'} class="text-blue-500 hover:underline"> Website </a>
-                            <a href={user.youtube || '#'} class="text-blue-500 hover:underline"> YouYube </a>
-                            <a href={user.instagram || '#'} class="text-blue-500 hover:underline"> Instagram </a>
-                            <a href={user.linkedIn || '#'} class="text-blue-500 hover:underline"> LinkedIn </a>
+
+                            {socialLinks.map(({ platform, key, baseHref }) => (
+                                <a
+                                    key={key}
+                                    href={user[key] ? `${baseHref}${user[key]}` : "#"}
+                                    target={user[key] ? "_blank" : undefined}
+                                    rel={user[key] ? "noopener noreferrer" : undefined}
+                                    className={user[key] ? "text-blue-500 hover:underline" : "text-gray-500 hover:underline"}
+                                >
+                                    {platform}
+                                </a>
+                            ))}
                         </div>
                         {/* <!-- Separator Line --> */}
                         <hr class="my-4 border-t border-gray-300" />
