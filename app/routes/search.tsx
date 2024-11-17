@@ -120,6 +120,49 @@ export default function Search() {
       </table>
 
 
+      <div className="grid grid-cols-1 gap-4 md:hidden">
+        <div>
+          {routes.map((route, index) => (
+            <div class="bg-white p-4 rounded-lg shadow mb-2 mt-2">
+              <div key={route.id}>
+                <div>
+                  <Link to={`/routes/${route.id}`}>{route.name}</Link>
+                </div>
+
+                <div>
+                  {route.description &&
+                    <>
+                      <p className="routeDescription">
+                        {route.description}
+                      </p>
+
+                    </>
+                  }
+                </div>
+                <div class="mt-1 mb-2">
+                  Difficulty: <b>{route.difficulty}</b>
+                  <br /> Stops: <b>{route.num_stops}</b>
+                  <br /> Kids: <b>{route.num_kids}</b>
+                </div>
+
+                <div class="flex items-center space-m2 text-sm">
+                  <Link class="mr-2" to={`/routes/${route.id}`}>
+                    <button className="view-button">View</button>
+                  </Link>
+                  <br />
+                  <Link to={`/download/gpx/${route.id}`}>
+                    <button className="download-button ">Download</button>
+                  </Link>
+
+                </div>
+              </div>
+
+            </div>
+          ))}
+
+        </div>
+      </div>
+
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto max-w-7x1">
           <div className="flex flex-wrap w-full mb-4 p-4">
