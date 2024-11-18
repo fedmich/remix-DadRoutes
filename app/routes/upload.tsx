@@ -45,8 +45,9 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Upload() {
   const actionData = useActionData();
   const { user_info } = useLoaderData<{ user_info: User }>();
-  console.log(user);
-
+  
+  // console.log( user_info );
+  
   return (
 
     <LoggedInLayout user={user_info}>

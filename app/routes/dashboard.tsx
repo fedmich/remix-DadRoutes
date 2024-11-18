@@ -6,7 +6,7 @@ import { redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import LoggedInLayout from "~/components/LoggedInLayout";
 import { connectAndQuery } from "~/lib/db";
-import type { Route } from "~/types";
+import type { Route, User } from "~/types";
 
 import '~/styles/main.css'; // Import CSS file for styling
 
@@ -54,7 +54,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Dashboard() {
-    const { routes, user } = useLoaderData<{ routes: Route[] }>();
+    const { routes, user } = useLoaderData<{ routes: Route[], user: User }>();
 
     return (
         <LoggedInLayout user={user}>
@@ -71,7 +71,12 @@ export default function Dashboard() {
                 <tbody>
                     {routes.map(route => (
                         <tr key={route.id}>
-                            <td>{route.name}</td>
+                            <td>
+
+                                <Link to={`/routes/${route.id}`}>
+                                    {route.name}
+                                </Link>
+                            </td>
                             <td>{route.difficulty}</td>
                             <td>{route.num_stops}</td>
                             <td>{route.num_kids}</td>
@@ -81,7 +86,7 @@ export default function Dashboard() {
             </table>
             <div>
                 <button onClick={() => window.location.href = "/upload"}>Upload GPX File</button>
-                <button onClick={() => window.location.href = "/new-map"}>Start a New Map</button>
+                <button onClick={() => window.location.href = "/new"}>Start a New Map</button>
             </div>
         </LoggedInLayout>
     );
