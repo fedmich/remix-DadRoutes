@@ -1,5 +1,6 @@
-import { json, redirect } from "@remix-run/node";
+import { LoaderFunction, json, redirect } from "@remix-run/node";
 import { useActionData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import Layout from "~/components/Layout";
 import { connectAndQuery } from "~/lib/db";
 import { getSession } from "~/lib/session"; // Adjust this import based on your session management
@@ -7,10 +8,44 @@ import fs from 'fs';
 import path from 'path';
 import { parseStringPromise } from 'xml2js'; // Ensure to install xml2js with npm/yarn
 
+export const loader: LoaderFunction = async ({ request }) => {
+  //   const userId = getUserIdFromSession(request); // Implement this function based on your session setup
+
+  const session = await getSession(request.headers.get("Cookie"));
+
+  // Check if userId is in the session
+  const authId = session.get("authId");
+
+  if (!authId) {
+    // Redirect to sign-in if user is not authenticated
+    return redirect("/sign-in");
+  }
+  const result_user = await connectAndQuery('SELECT * FROM users WHERE google_sub = $1', [authId]);
+
+  // Assign the data from the query result
+  const user_infos = result_user.rows; // Assuming result.rows contains the query data
+
+  if (!user_infos) {
+    // Redirect to sign-in if user is not authenticated
+    return redirect("/sign-in");
+  }
+
+  const user_info = user_infos[0];
+  const userId = user_info.id;
+
+  if (!userId) {
+    // Redirect to sign-in if user is not authenticated
+    return redirect("/sign-in");
+  }
+
+  return json({ user_info });
+};
+
 export default function Upload() {
   const actionData = useActionData();
 
   return (
+    const { user } = useLoaderData();
     <Layout>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <form method="post" encType="multipart/form-data" className="p-4">
