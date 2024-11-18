@@ -86,9 +86,37 @@ export default function Dashboard() {
                     ))}
                 </tbody>
             </table>
+
+            <br />
+            <br />
+            <hr />
+            <br />
+            <br />
+            <h3 className="text-xl font-bold">Making a new route?</h3>
+            <p>
+                Let's get started by uploading a GPX file or start from scratch by marking the points of your route.
+            </p>
+            <br />
+
             <div>
-                <button onClick={() => window.location.href = "/upload"}>Upload GPX File</button>
-                <button onClick={() => window.location.href = "/new"}>Start a New Map</button>
+
+                <div className="flex">
+
+                    <Link to={`/upload`}>
+                        <button className="download-button ">Upload GPX</button>
+                    </Link>
+
+                    <div>
+                        &nbsp;
+                        |
+                        &nbsp;
+                    </div>
+
+                    <Link to={`/new`}>
+                        <button className="download-button ">New route</button>
+                    </Link>
+                </div>
+
             </div>
         </LoggedInLayout>
     );

@@ -18,7 +18,7 @@ const LoggedInLayout: React.FC<{ children: React.ReactNode; user: User }> = ({ c
                 <div className="flex justify-between items-center px-4">
                     {/* Left - App Title */}
                     <h1 className="text-3xl font-bold">
-                        <Link to="/" className="text-gray-800 hover:text-blue-500">Dad Routes</Link>
+                        <Link to="/dashboard" className="text-gray-800 hover:text-blue-500">Dad Routes</Link>
                     </h1>
 
                     {/* Right - User Avatar, Dropdown, Dark Mode */}
@@ -40,6 +40,10 @@ const LoggedInLayout: React.FC<{ children: React.ReactNode; user: User }> = ({ c
                                 <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-48 z-10">
                                     <Link to="/profile" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                                         Profile
+                                    </Link>
+                                    <hr />
+                                    <Link to="/dashboard" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                        My routes
                                     </Link>
                                     <Link to="/upload" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                                         Upload GPX
