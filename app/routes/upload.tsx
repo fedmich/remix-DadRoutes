@@ -1,7 +1,7 @@
 import { LoaderFunction, json, redirect } from "@remix-run/node";
 import { useActionData } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
-import Layout from "~/components/Layout";
+import LoggedInLayout from "~/components/LoggedInLayout";
 import { connectAndQuery } from "~/lib/db";
 import { getSession } from "~/lib/session"; // Adjust this import based on your session management
 import fs from 'fs';
@@ -44,9 +44,12 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Upload() {
   const actionData = useActionData();
 
+  const { user } = useLoaderData();
+  console.log(user);
+
   return (
-    const { user } = useLoaderData();
-    <Layout>
+
+    <LoggedInLayout>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <form method="post" encType="multipart/form-data" className="p-4">
           <div className="mb-4">
@@ -74,6 +77,7 @@ export default function Upload() {
               name="difficulty"
               className="border rounded px-2 py-1 w-full"
             >
+              <option></option>
               <option value="Easy">Easy</option>
               <option value="Moderate">Moderate</option>
               <option value="Difficult">Difficult</option>
@@ -106,7 +110,7 @@ export default function Upload() {
           {actionData?.error && <p className="text-red-500">{actionData.error}</p>}
         </form>
       </div>
-    </Layout>
+    </LoggedInLayout>
   );
 }
 

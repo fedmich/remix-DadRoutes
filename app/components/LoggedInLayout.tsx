@@ -39,6 +39,9 @@ const LoggedInLayout: React.FC<{ children: React.ReactNode; user: User }> = ({ c
                                     <Link to="/profile" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                                         Profile
                                     </Link>
+                                    <Link to="/upload" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                        Upload GPX
+                                    </Link>
                                     <Link to="/new" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                                         New Route
                                     </Link>
