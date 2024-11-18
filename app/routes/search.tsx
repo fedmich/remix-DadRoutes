@@ -72,52 +72,53 @@ export default function Search() {
         />
         <button type="submit">Search</button>
       </form>
-      <table className="styled-table whitespace-nowrap">
-        <thead>
-          <tr>
-            <th className="hidden md:table-cell">#</th>
-            <th className="hidden sm:table-cell" onClick={() => handleSort('name')}>Name</th>
-            <th className="hidden md:table-cell" onClick={() => handleSort('user')}>User</th>
-            <th className="hidden sm:table-cell" onClick={() => handleSort('difficulty')}>Difficulty</th>
-            <th className="hidden md:table-cell" onClick={() => handleSort('num_stops')}>Stops</th>
-            <th className="hidden md:table-cell" onClick={() => handleSort('num_kids')}>Kids</th>
-            <th className="hidden md:table-cell" colSpan={2}>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {routes.map((route, index) => (
-            <tr key={route.id}>
-              <td className="hidden md:table-cell">{index + 1}</td>
-              <td className="hidden sm:table-cell">
-                <Link to={`/routes/${route.id}`}>{route.name}</Link>
-                {route.description &&
-                  <>
-                    <p className="routeDescription">
-                      {route.description}
-                    </p>
-
-                  </>
-                }
-
-              </td>
-              <td className="hidden md:table-cell">{route.user}</td>
-              <td className="hidden sm:table-cell">{route.difficulty}</td>
-              <td className="hidden md:table-cell">{route.num_stops}</td>
-              <td className="hidden md:table-cell">{route.num_kids}</td>
-              <td className="hidden md:table-cell">
-                <Link to={`/routes/${route.id}`}>
-                  <button className="view-button">View</button>
-                </Link>
-              </td>
-              <td className="hidden md:table-cell">
-                <Link to={`/download/gpx/${route.id}`}>
-                  <button className="download-button ">Download</button>
-                </Link>
-              </td>
+      <div className="overflow-auto rounded-lg shadow hidden md:block">
+        <table className="styled-table whitespace-nowrap">
+          <thead>
+            <tr>
+               <th className="hidden md:table-cell">#</th>
+            	<th className="hidden sm:table-cell" onClick={() => handleSort('name')}>Name</th>
+            	<th className="hidden md:table-cell" onClick={() => handleSort('user')}>User</th>
+              <th className="hidden sm:table-cell" onClick={() => handleSort('difficulty')}>Difficulty</th>
+              <th className="hidden md:table-cell" onClick={() => handleSort('num_stops')}>Stops</th>
+              <th className="hidden md:table-cell" onClick={() => handleSort('num_kids')}>Kids</th>
+              <th className="hidden md:table-cell" colSpan={2}>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {routes.map((route, index) => (
+              <tr key={route.id}>
+                <td className="hidden md:table-cell">{index + 1}</td>
+                <td className="hidden sm:table-cell">
+                  <Link to={`/routes/${route.id}`}>{route.name}</Link>
+                  {route.description &&
+                    <>
+                      <p className="routeDescription">
+                        {route.description}
+                      </p>
+
+                    </>
+                  }
+
+                </td>
+                <td className="hidden md:table-cell">{route.user}</td>
+                <td className="hidden sm:table-cell">{route.difficulty}</td>
+                <td className="hidden md:table-cell">{route.num_stops}</td>
+                <td className="hidden md:table-cell">{route.num_kids}</td>
+                <td className="hidden md:table-cell">
+                  <Link to={`/routes/${route.id}`}>
+                    <button className="view-button">View</button>
+                  </Link>
+                </td>
+                <td className="hidden md:table-cell">
+                  <Link to={`/download/gpx/${route.id}`}>
+                    <button className="download-button ">Download</button>
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
 
       </div>
