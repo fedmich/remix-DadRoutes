@@ -54,10 +54,10 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Dashboard() {
-    const { routes, user } = useLoaderData<{ routes: Route[], user: User }>();
+    const { routes, user_info } = useLoaderData<{ routes: Route[], user: User }>();
 
     return (
-        <LoggedInLayout user={user}>
+        <LoggedInLayout user={user_info}>
             <h1>My Routes</h1>
             <table className="styled-table">
                 <thead>
