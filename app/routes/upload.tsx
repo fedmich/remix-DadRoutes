@@ -7,6 +7,7 @@ import { getSession } from "~/lib/session"; // Adjust this import based on your 
 import fs from 'fs';
 import path from 'path';
 import { parseStringPromise } from 'xml2js'; // Ensure to install xml2js with npm/yarn
+import type { User } from "~/types";
 
 export const loader: LoaderFunction = async ({ request }) => {
   //   const userId = getUserIdFromSession(request); // Implement this function based on your session setup
@@ -43,13 +44,12 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Upload() {
   const actionData = useActionData();
-
-  const { user } = useLoaderData();
+  const { user_info } = useLoaderData<{ user_info: User }>();
   console.log(user);
 
   return (
 
-    <LoggedInLayout>
+    <LoggedInLayout user={user_info}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <form method="post" encType="multipart/form-data" className="p-4">
           <div className="mb-4">

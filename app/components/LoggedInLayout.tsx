@@ -2,6 +2,8 @@ import { Link } from "@remix-run/react";
 import { useState } from "react";
 import type { User } from "~/types"; // Import User type
 
+import defaultAvatar from '~/assets/default_avatar.png';
+
 const LoggedInLayout: React.FC<{ children: React.ReactNode; user: User }> = ({ children, user }) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
@@ -10,7 +12,7 @@ const LoggedInLayout: React.FC<{ children: React.ReactNode; user: User }> = ({ c
     const toggleDarkMode = () => setDarkMode(!darkMode);
 
     return (
-        <div className={`flex flex-col min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
+        <div className={`flex flex-col min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-black'}`}>
             {/* Header */}
             <header className="w-full bg-white shadow py-4">
                 <div className="flex justify-between items-center px-4">
@@ -29,7 +31,7 @@ const LoggedInLayout: React.FC<{ children: React.ReactNode; user: User }> = ({ c
                         {/* Avatar and Dropdown */}
                         <div className="relative">
                             <img
-                                src={user?.picture || "/default-avatar.png"} // Default avatar if picture is missing
+                                src={user?.picture || defaultAvatar} // Default avatar if picture is missing
                                 alt="User Avatar"
                                 className="w-10 h-10 rounded-full cursor-pointer"
                                 onClick={toggleDropdown}

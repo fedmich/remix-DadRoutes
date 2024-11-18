@@ -92,7 +92,7 @@ export default function Profile() {
     const user = user_info;
 
     return (
-        <LoggedInLayout>
+        <LoggedInLayout user={user_info}>
             <h1>Edit Profile</h1>
             <div style={{ maxWidth: "600px", margin: "auto" }}>
                 {/* Avatar Section */}
