@@ -5,10 +5,12 @@ import { LoaderFunction, json } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import LoggedInLayout from "~/components/LoggedInLayout";
+// import Layout from "~/components/Layout";
 import { connectAndQuery } from "~/lib/db";
 import type { Route, User } from "~/types";
 
 import '~/styles/main.css'; // Import CSS file for styling
+import { Link } from 'react-router-dom';
 
 export const meta: MetaFunction = () => [
     { title: "Dashboard - Dad Routes" },
@@ -54,7 +56,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Dashboard() {
-    const { routes, user_info } = useLoaderData<{ routes: Route[], user: User }>();
+    const { routes, user_info } = useLoaderData<{ routes: Route[], user_info: User }>();
 
     return (
         <LoggedInLayout user={user_info}>
