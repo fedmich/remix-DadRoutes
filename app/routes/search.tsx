@@ -141,6 +141,21 @@ export default function Search() {
 
                     </>
                   }
+                  {route.picture &&
+                    <>
+                      <p>
+                        <Link to={`/routes/${route.id}`}>
+                          <div className="routeThumbnail">
+                            <img
+                              alt="Thumbnail"
+                              className="w-full max-w-[320px] h-auto object-cover border-2 border-gray-300 shadow-lg rounded-lg"
+                              src={route.picture}
+                            />
+                          </div>
+                        </Link>
+                      </p>
+                    </>
+                  }
                 </div>
                 <div class="mt-1 mb-2">
                   Difficulty: <b>{route.difficulty}</b>
